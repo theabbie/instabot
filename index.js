@@ -7,36 +7,15 @@ var url = require("url");
 var devRant = require("rantscript");
 const save = util.promisify(fs.writeFile);
 var imgur = require("imgur");
-
-async function load(url) {  
-  const writer = fs.createWriteStream("meme.jpg")
-  const response = await axios({
-    url,
-    method: 'GET',
-    responseType: 'stream'
-  })
-  response.data.pipe(writer)
-  return new Promise((resolve, reject) => {
-    writer.on('finish', resolve)
-    writer.on('error', reject)
-  })
-}
+var rgag = require("random-gag");
 
 (async function() {
   var browser = await puppeteer.launch({args: ['--no-sandbox']});
   var page = await browser.newPage();
   try {
-  var url;
-  while (true) {
-  await page.goto("https://9gag.com/shuffle");
-  var isvideo = await page.evaluate(function() {
-     return document.querySelector("video source")?true:false;
-  });
-  url = await page.evaluate(function() {
-     return document.querySelector("link[rel='image_src']").href;
-  });
-  if (!isvideo) break;
-  }
+  var gag = await rgag();
+  while (gag.type!="Photo") gag = await rgag();
+  var url = gag.images.image700.url;
   console.log(url);
   await page.setUserAgent('Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Mobile Safari/537.36');
   await page.setCookie(...[
