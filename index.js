@@ -9,6 +9,20 @@ const save = util.promisify(fs.writeFile);
 var imgur = require("imgur");
 var rgag = require("random-gag");
 
+async function load(url) {  	
+  const writer = fs.createWriteStream("meme.jpg")	
+  const response = await axios({	
+    url,	
+    method: 'GET',	
+    responseType: 'stream'	
+  })	
+  response.data.pipe(writer)	
+  return new Promise((resolve, reject) => {	
+    writer.on('finish', resolve)	
+    writer.on('error', reject)	
+  })	
+}
+
 (async function() {
   var browser = await puppeteer.launch({args: ['--no-sandbox']});
   var page = await browser.newPage();
