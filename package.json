@@ -15,7 +15,8 @@
     "cheerio": "^0.22.0",
     "rantscript": "^1.4.0",
     "axios": "^0.19.0",
-    "imgur": "^0.3.1"
+    "imgur": "^0.3.1",
+    "random-gag": "^1.0.2"
   },
   "author": "",
   "license": "ISC"
